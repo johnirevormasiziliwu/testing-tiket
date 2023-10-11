@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pembayaran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        h3,
+        h1,
+        span,
+        label,
+        p,
+        .input-style {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+
+<body class="flex justify-center items-center   bg-gray-100 m-h-screen">
+    <div class="card p-6 bg-white shadow-lg relative" x-data="pembayaran">
+
+        <div class="grid grid-cols-2">
+            <div class="col-span-1 mt-3">
+                <div class="w-[190px] ">
+                    <p class="text-center rounded-lg shadow-sm p-2 font-semibold bg-yellow-100">BUKTI PEMBAYARAN</p>
+                </div>
+               
+            </div>
+            <div class="col-span-1 relative">
+             
+                <img src="images/logokangdola/icon.png" alt="Gambar Logo Kang Dola"
+                    class="absolute right-0 top-0 mt-[-25px] mr-[-25px]">
+                <img class="absolute right-10 top-0  mt-[-25px] mr-[-25px] text-black"
+                    src="images/logokangdola/logo22.png" style="width: 100px; margin-left: 60px;"
+                    alt="Gambar Logo Kang Dola">
+            </div>
+
+        </div>
+
+        <div class="border-2 rounded-lg bg-white mt-10 py-2 px-3 z-10 border-black flex flex-col">
+
+
+            <h1 class="font-bold text-lg leading-10">Detail Tagihan</h1>
+
+            <div class="flex flex-row">
+                <div class="basis-1/2">
+                    <h3>Total Tagihan</h3>
+                </div>
+                <div class="basis-1/2 text-right">
+                    <p>
+                        <span x-text="rupiah(getData.detail.data.jumlah_dibayarkan)"></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-row mt-3">
+                <div class="basis-1/2">
+                    <h3>No.Invoice </h3>
+                </div>
+                <div class="basis-1/2 text-right">
+                    <p>
+                        <span x-text="getData.invoice"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-row mt-3">
+                <div class="basis-1/2">
+                    <h3>Metode Pembayaran</h3>
+                </div>
+                <div class="basis-1/2 text-right">
+                    <p>
+                        <span x-text="getData.detail.data.metode_pembayaran"></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-row mt-3">
+                <div class="basis-1/2">
+                    <h3>Bank</h3>
+                </div>
+                <div class="basis-1/2 text-right">
+                    <p>
+                        <span x-text="getData.detail.data.instansi_pembayaran"></span> -
+                        <span x-text="getData.detail.data.nomor_pembayaran"></span>
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="flex flex-row mt-3">
+                <div class="basis-1/2">
+                    <h3>Status Pembayaran</h3>
+                </div>
+                <div class="basis-1/2">
+                    <p class="text-right">
+                        <span x-show="!getData.status_pembayaran" role="alert">
+                            Menunggu Pembayaran
+                        </span>
+                        <span x-show="getData.status_pembayaran">
+                            Pembayaran Berhasil
+                        </span>
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="relative">
+            <div x-show="getData.status_pembayaran">
+                <img class="absolute" src="{{ asset('logokangdolan/logo-paid.png') }}" alt="">
+            </div>
+        </div>
+
+        <div class="border-2 rounded-lg border-black py-2 px-3 bg-white mt-10 ">
+            <div class="pemesan">
+                <h1 class="font-bold text-lg leading-10">Daftar Pemesanan</h1>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Nama</label>
+                    <input type="text"
+                        class=" input-style form-input mb-3 borde border-gray-300 rounded-md shadow-sm  "
+                        x-model="getData.customer.nama_kostumer">
+                </div>
+                <div>
+                    <label class="text-sm block text-gray-700 font-bold mb-2 ">Email</label>
+                    <input type="text"
+                        class="input-style form-input mb-3 border border-gray-300 rounded-md shadow-sm "
+                        x-model="getData.customer.email_kostumer">
+                </div>
+                <div>
+                    <label class="text-sm block text-gray-700 font-bold mb-2">Tanggal Kedatangan</label>
+                    <input type="text" class="input-style form-input  border border-gray-300 rounded-md shadow-sm "
+                        x-model="getData.customer.tanggal_masuk">
+                </div>
+            </div>
+
+            <div class="tiket mt-5">
+                <h1 class="font-bold text-lg leading-10">Daftar Tiket</h1>
+                <template x-for="data in getData.list_tiket">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Nama Tiket</label>
+                        <div class="rounded-md py-2 px-2 text-sm bg-white border border-gray-300 shadow-sm mb-2">
+                            <span x-text="data.tiket"></span>
+                        </div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Jumlah Pemesanan Tiket</label>
+                        <div class="rounded-md py-2 px-2 text-sm bg-white border border-gray-300 shadow-sm mb-2">
+                            <span x-text="data.jumlah + 'x'">1x</span>
+                        </div>
+                    </div>
+
+                </template>
+            </div>
+        </div>
+        <div class="card mt-5 border-2 rounded-lg border-black" x-show="getData.status_pembayaran">
+            <div class="card-body flex flex-col items-center">
+                <h1 class="font-semibold">SCAN BARCODE</h1>
+                <div
+                    class="w-32 mt-3 py-2 px-2 rounded-sm bg-yellow-100 flex justify-center items-center shadow-sm border-yellow-50">
+                    <span x-text="getData.redeem.code"></span>
+                </div>
+                <div class="mt-3" id="qrcode"></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('pembayaran', () => ({
+            getData: {
+                status_pembayaran: null,
+                detail: {
+                    data: {
+                        instansi_pembayaran: '',
+                        metode_pembayaran: '',
+                        nomor_pembayaran: '',
+                        jumlah_dibayarkan: '',
+                    }
+                },
+                customer: {
+                    nama_kostumer: '',
+                    email_kostumer: '',
+                    tanggal_masuk: ''
+                },
+                redeem: {
+                    code: ''
+                },
+                list_tiket: []
+            },
+            async getInv(inv) {
+                try {
+                    let data = await axios.get('/api/pembayaran/' + inv)
+                    this.getData = data.data
+                    console.log(data.data);
+                    var qrcode = new QRCode(document.getElementById("qrcode"), {
+                        text: this.getData.redeem.code,
+                        width: 128,
+                        height: 128,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                } catch (error) {
+
+                }
+            },
+            rupiah(number) {
+                return new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR"
+                }).format(number);
+            },
+            init() {
+                let inv = window.location.pathname.match(/[^\/]+$/)[0]
+                this.getInv(inv)
+            }
+        }))
+    })
+</script>
+
+</html>
